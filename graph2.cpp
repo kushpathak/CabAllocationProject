@@ -3,10 +3,17 @@
 #define earth_radius 6371.0
 using namespace std;
 vector<int>ans;
+
+/*
+    Function to convert degree into radius
+*/
 double convert_to_rad(double deg)
 {
     return ( deg * pi / 180);
 }
+/*  
+    Function to calculate distance between 2 coordinates
+*/
 double distanceEarth(double lat1d,double lon1d,double lat2d, double lon2d)
 {
     double lat1, lon1, lat2, lon2,
@@ -21,12 +28,15 @@ double distanceEarth(double lat1d,double lon1d,double lat2d, double lon2d)
                   cos(lat2) * cos(delta_lon) );
 
     return (earth_radius * central_ang);
-}
+}  
 double randomFloat(int LO,int HI){
     srand (static_cast <unsigned> (time(0)));
     float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
     return r3;
 }
+/*
+    Function to generate random locations for cab drivers 
+*/
 void generate(){
     vector<pair<double,double> >cabPos;
     double px,py;
