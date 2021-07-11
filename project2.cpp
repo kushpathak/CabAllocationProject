@@ -3,28 +3,42 @@
 #include<iomanip>
 #include<string.h>
 #include<cstdio>
-#include<time.h>
-#include<conio.h>
+#include<ctime>
 #include "G1.h";
 #include "G2.h";
 using namespace std;
 Graph G;
+/*  
+    Structure which contains information about the route
+    start,end and distance
+*/
 struct location{
     char a[30],b[30];
     int dist;
 };
+/*  
+    Structure which contains information about the ride 
+    i,e its id,fare and driver name
+*/
 struct ride
 {
     int id;
     float fare;
     char driver[30];
 };
+/*
+    Structure which contains information regarding which driver is currently driving 
+    the cab for a user
+*/
 struct UserCab{
     char user[100];
     char driv[100];
     char t[100];
     int cid;
 };
+/*
+    Class which keeps the customer information 
+*/
 class customer
 {
     char custname[50];
@@ -41,6 +55,9 @@ class customer
                 trides=0;
                 r=NULL;
             }
+            /*
+                Function to display customer details
+            */
             void getcustdets()
             {
                 cout<<"\n\n\n\n\n";
@@ -60,9 +77,11 @@ class customer
                 cin>>phone;
                 cout<<"\t\t\t ENTER PASSWORD:";
                 cin>>password;
-                /*cout<<"\t\t\t ENTER PASSWORD:";
-                cin>>password;*/
+                
             }
+            /*
+                Function to modify customer details
+            */
             void modify()
             {
                 int k, l;
@@ -99,18 +118,30 @@ class customer
                     }
                 }
             }
+            /*
+                Function to get customer id
+            */
             int retcustid()
             {
                 return custid;
             }
+            /*
+                Function to get password for customer
+            */
             char* retpassword()
             {
                 return password;
             }
+            /*
+                Function to get ride details for the customer
+            */
             ride* retridedets()
             {
                 return r;
             }
+            /*  
+                Function to get gender of the customer
+            */
             char retgend()
             {
                 return gender;
@@ -121,6 +152,9 @@ class customer
             }
 };
 
+/*
+    Function to read details of the customer from a file
+*/
 void custaread()
 {
  fstream f("customers.dat",ios::in|ios::binary);
@@ -133,7 +167,7 @@ cout<<"      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ CUSTOMER'S LIST ^^^^^
   if(!f)
 {
        cout<<"\t no record";
-       getch();
+       ;
       return;
 }
   while(f)
@@ -143,9 +177,12 @@ cout<<"      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ CUSTOMER'S LIST ^^^^^
   break;
   c.custdisp();
  }
- getch();
+ ;
  return;
 }
+/*  
+    Function to add details of a new customer  
+*/
 void custappend()
 {
  char ans='y';
@@ -154,7 +191,7 @@ void custappend()
   if(!f)
  {
   cout<<"\t CAN'T PROCEED\t";
-  getch();
+  ;
   exit(0);
  }
  while(ans=='y'||ans=='Y')
@@ -166,6 +203,9 @@ void custappend()
  }
  f.close();
 }
+/*
+    Function to delete details of a particular customer
+*/
 void custadelete()
 {
  fstream temp,f;
@@ -174,7 +214,7 @@ void custadelete()
   if(!f||!temp)
  {
   cout<<"\n\t CAN'T PROCEED";
-  getch();
+  ;
   exit(0);
  }
  char nm[50],ans3;
@@ -189,7 +229,7 @@ void custadelete()
   f.read((char*)&c,sizeof(c));
   if(f.eof())
   {
-      getch();
+      ;
       break;
   }
   if(c.retcustid()==k)
@@ -216,8 +256,10 @@ rename("temp.dat","customers.dat");
   if(flag==0)
   cout<<"\n\t record not found\t\n";
   f.close();
- }
-
+}
+/*
+    Function to modify details of a particular customer
+*/
 void custamodify()
 {
  int flag=0, k;
@@ -228,10 +270,10 @@ void custamodify()
  if(!f)
  {
   cout<<"Cannot proceed. Exitting..";
-  getch();
+  ;
   exit(0);
  }
- //custaread();
+
  cout<<"\n\n\tENTER ID OF CUSTOMER WHOSE DETAILS ARE TO BE MODIFIED: ";
  cin>>k;
 int p;
@@ -267,8 +309,11 @@ int p;
 if(flag==0)
   cout<<"\tRecord Not Found";
  f.close();
- getch();
+ ;
 }
+/*
+    Function to get location details
+*/
 void LocationDetails(){
     fstream f;
      f.open("locations.dat",ios::in|ios::binary);
@@ -278,6 +323,9 @@ void LocationDetails(){
      }
      f.close();
 }
+/*
+    Function to add new location
+*/
 void AddLocation(){
     fstream f;
     f.open("locations.dat",ios::app|ios::binary);
@@ -294,6 +342,9 @@ void AddLocation(){
     f.write((char*)&L,sizeof(L));
     f.close();
 }
+/*
+    Function to add edges to a graph
+*/
 void createGraph(){
     /// Adding random weights;
     srand(time(NULL));
@@ -318,6 +369,9 @@ void createGraph(){
      }
      f.close();
 }
+/*  
+    Function to simulate cab rides
+*/
 void startRide(){
     srand(time(NULL));
     system("cls");
@@ -415,6 +469,9 @@ void startRide(){
        f.write((char*)&U,sizeof(U));
 
 }
+/*
+    Function to add new drivers and rides
+*/
 void append(){
     fstream f;
     f.open("cabs.dat",ios::app|ios::binary);
@@ -423,6 +480,9 @@ void append(){
     cin >> r.id >>  r.driver;
     f.write((char*)&r,sizeof(r));
 }
+/*
+    Function to read details of a cab
+*/
 void aread1(){
     cout << "Details of the cabs are as follows -> \n";
     fstream f;
@@ -433,6 +493,9 @@ void aread1(){
     }
     system("pause");
 }
+/*
+    Function to display details of all travels taken up so far
+*/
 void aread2(){
     cout << "\t\t\t\t\ ---- All details of rides are as follows ---- \n";
     fstream f;
@@ -446,6 +509,9 @@ void aread2(){
     system("pause");
     f.close();
 }
+/*
+    Function to fetch all rides travelled by given customer
+*/
 void findrides(char*name){
         fstream f;
         f.open("conn.dat",ios::in|ios::binary);
@@ -490,12 +556,12 @@ int main()
             case 1:   cout<<"\n\n\n\n"<<setw(50)<<" PLEASE ENTER THE PASSWORD ";
                        i=0;
                       char ch;
-                      ch=getch();
+                      cin >> ch;
                       p[0]=ch;
                       while(ch!=char(13))
                       {
                             cout<<"*";
-                            ch=getch();
+                            cin >> ch;
                             if(ch==char(13))
                                 break;
                             i++;
@@ -503,11 +569,11 @@ int main()
                       }
                       p[++i]='\0';
                       //cout<<p;
-                      if(strcmpi(p,"cabss123")!=0)	  //password is "cabss123"
+                      if(strcmp(p,"cabss123")!=0)	  //password is "cabss123"
                       {
                          cout<<"\n\n\n"<<setw(50)<<"  WRONG PASSWORD ";
                          cout<<"\n\t\t......access denied......\t\t\n";
-                         getch();
+                         ;
                          exit(0);
                       }
                       tkk:
@@ -607,7 +673,7 @@ int main()
                                      goto start;
                          }
                      break;
-            case 4:  getch();
+            case 4:  
                      exit(0);
 
 
