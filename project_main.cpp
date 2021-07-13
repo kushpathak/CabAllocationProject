@@ -48,6 +48,7 @@ class customer
     char gender;
     char phone[11];
     char password[15];
+    // Pointer to the rides in which the customer travelled
     ride *r;
 
     public: customer()
@@ -161,13 +162,12 @@ void custaread()
  customer c;
  system("cls");
  cout<<"\n\t\t\t\t   \n\n";
-cout<<"      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ CUSTOMER'S LIST ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n";
+ cout<<"      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ CUSTOMER'S LIST ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n";
  cout<<setw(15)<<"ID"<<setw(20)<<"NAME"<<setw(17)<<"GENDER"<<setw(18)<<"BIRTH DATE"<<setw(17)<<"PHONE NO."<<setw(18)<<"TOTAL RIDES\n\n";
  cout<<"      ---------------------------------------------------------------------------------------------------------\n\n";
   if(!f)
 {
-       cout<<"\t no record";
-       ;
+      cout<<"\t no record";
       return;
 }
   while(f)
@@ -226,6 +226,8 @@ void custadelete()
  cin>>k;
  while(f)
  {
+  // Reading the customer records from the file and storing them 
+  // to a customer object
   f.read((char*)&c,sizeof(c));
   if(f.eof())
   {
@@ -245,9 +247,9 @@ void custadelete()
     temp.write((char*)&c,sizeof(c));
   }
   else
-{
+ {
    temp.write((char*)&c,sizeof(c));
-}
+ }
 }
 f.close();
 temp.close();
@@ -276,7 +278,7 @@ void custamodify()
 
  cout<<"\n\n\tENTER ID OF CUSTOMER WHOSE DETAILS ARE TO BE MODIFIED: ";
  cin>>k;
-int p;
+ int p;
  while(f)
 {
   p=f.tellg();
@@ -356,16 +358,16 @@ void createGraph(){
         pos.push_back({a,b});
     }
     sort(pos.begin(),pos.end());
-   fstream f;
-     f.open("locations.dat",ios::in|ios::binary);
-     location L;
-     int cnter=0,i=0;
-     while(f.read((char*)&L,sizeof(L))){
+    fstream f;
+    f.open("locations.dat",ios::in|ios::binary);
+    location L;
+    int cnter=0,i=0;
+    while(f.read((char*)&L,sizeof(L))){
         if(i<z && cnter==pos[i].first){
           L.dist = L.dist+pos[i].second;
           i++;
          }
-        G.AddEdge(L.a,L.b,L.dist);
+        G.add_edge(L.a,L.b,L.dist);
      }
      f.close();
 }
@@ -373,9 +375,11 @@ void createGraph(){
     Function to simulate cab rides
 */
 void startRide(){
+    generate();
     srand(time(NULL));
     system("cls");
-    cout << ans.size() << endl;
+    
+    
     if(ans.size()==0){
         cout << "Sorry No cabs availible at the moment please try again ..... ";
         system("pause");
@@ -409,33 +413,33 @@ void startRide(){
 
                 cout << "Enter Source and destination\n";
                  cin >> src >> dest;
-                 if(!G.checkArea(src,dest)){
+                 if(!G.check_area(src,dest)){
                     cout << "Sorry the distance is too large for a micro better try a outstation!!";
                     system("pause");
                     goto tkk;
 
                  }
                  cout << "Riding in a Micro driven by " << r.driver << endl;
-                 G.Dijkstra(src,dest,20);
+                 G.dijkstra(src,dest,20);
                  system("pause");
                  break;
         case 2 : ///string src,dest;
                  cout << "Enter Source and destination\n";
                  cin >> src >> dest;
-                 if(!G.checkArea(src,dest)){
+                 if(!G.check_area(src,dest)){
                     cout << "Sorry the distance is too large for a sedan better try a outstation!!\n";
                     system("pause");
                     goto tkk;
 
                  }
                  cout << "Riding in a Sedan driven by " << r.driver << endl;
-                 G.Dijkstra(src,dest,60);
+                 G.dijkstra(src,dest,60);
                  system("pause");
                  break;
         case 3 :
                  cout << "Enter Source and destination\n";
                  cin >> src >> dest;
-                 if(G.checkArea(src,dest)==1){
+                 if(G.check_area(src,dest)==1){
                     cout << "Your are already under the area " << G.getarea(src) << " You can better try Micro or sedan \n";
                     system("pause");
                     goto tkk;
@@ -446,10 +450,10 @@ void startRide(){
                  cout << "                ---------------    ---   HERE IS YOUR ROUTE  ---   --------------------\n";
                  cout << "1. " << src << endl;
                  cnt++;
-                 ans += G.Outstation(src,cnt);
-                 ans += G.Outstation(dest,cnt);
+                 ans += G.out_station(src,cnt);
+                 ans += G.out_station(dest,cnt);
                  cout << cnt << ' ' << dest << endl;
-                 cout << endl << "YOUR TOTAL FARE IS = " << ans << "\nTOTAL DISTANCE TRAVELLED IS : " << ans/50+50 << "\n\n                  Hope you Enjoyed travelling with us \n";
+                 cout << endl << "YOUR TOTAL FARE IS = " << ans << "\nTOTAL DISTANCE TRAVELLED IS : " << ans/50 << "\n\n                  Hope you Enjoyed travelling with us \n";
                  system("pause");
                  break;
        }
@@ -535,8 +539,8 @@ int main()
     //aread2();
     //cabs c;
     createGraph();
-    G.Allocate_area();
-    //G.Dijkstra("Sector_18","Sector_62");
+    G.allocate_area();
+    //G.dijkstra("Sector_18","Sector_62");
     start:
 	    system("cls");
 	    cout<<"\n\n\n\n\n";
@@ -582,9 +586,6 @@ int main()
                          cout<<"\n\t================================================================================\n";
                          cout<<"\t\t\t\t\t\t\t\t 1. ADDING LOCATION TO THE LIST\n";
                          cout<<"\t\t\t\t\t\t\t\t 2. DISPLAYING LOCATION ON THE LIST\n";
-                        //cout<<setw(48)<<" 3. MODIFYING ANY MOVIE DETAILS\n";
-                        //cout<<setw(36)<<" 4. DELETING MOVIE \n";
-                        //cout<<setw(49)<<" 5. SEEING THE WEEK'S MOVIE LIST\n";
                          cout<<"\t\t\t\t\t\t\t\t 3. RETURN TO MAIN MENU\n";
                          cout<<"\t\t\t\t\t\t\t\t CHOICE=";
                          cin>>c1;
@@ -601,7 +602,7 @@ int main()
                              case 3: system("cls");
                                      goto start;
                          }
-                    //cout<<"hi";
+                    
                     break;
             case 2:
                     ttk:

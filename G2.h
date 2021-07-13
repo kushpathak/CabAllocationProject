@@ -30,6 +30,7 @@ double randomFloat(int LO,int HI){
     return r3;
 }
 void generate(){
+    ans.clear()
     time_t t;
     time(&t);
     char*c = ctime(&t);
