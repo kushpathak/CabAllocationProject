@@ -80,45 +80,7 @@ class customer
                 cin>>password;
                 
             }
-            /*
-                Function to modify customer details
-            */
-            void modify()
-            {
-                int k, l;
-                char cpass[15];
-                cout<<"\n\t\t CUSTOMER DETAILS ";
-                cout<<"\n\t CUSTOMER ID: "<<custid;
-                cout<<"\n\t CUSTOMER NAME: "<<custname;
-                cout<<"\n\t PHONE NO.: "<<phone;
-                cout<<"\t\t DOB: "<<bd<<"-"<<bm<<"-"<<by;
-                cout<<"\t\t GENDER: "<<gender;
-                cout<<"\n\t DO YOU WANT TO CHANGE THE PHONE NO.(0 to retain old): ";
-                cin>>k;
-                if(k!=0)
-                    {
-                        cout<<"\n\t ENTER NEW PHONE NO.: ";
-                        cin>>phone;
-                    }
-                cout<<"\n\t DO YOU WANT TO CHANGE THE PASSWORD(0 to retain old): ";
-                cin>>l;
-                if(l!=0)
-                {
-                    check:
-                    cout<<"\n\t ENTER OLD PASSWORD:";
-                    cin>>cpass;
-                    if(strcmp(cpass, password)==0)
-                    {
-                        cout<<"\t ENTER NEW PASSWORD:";
-                        cin>>password;
-                    }
-                    else
-                    {
-                        cout<<" ******** ERROR!!! PASSWORD DOES NOT MATCH!! TRY AGAIN! **************** ";
-                        goto check;
-                    }
-                }
-            }
+            
             /*
                 Function to get customer id
             */
